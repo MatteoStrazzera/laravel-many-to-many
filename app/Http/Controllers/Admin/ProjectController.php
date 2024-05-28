@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Auth\Events\Validated;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Type;
+use App\Models\Technology;
 use Illuminate\Support\Str;
 
 class ProjectController extends Controller
@@ -27,7 +28,8 @@ class ProjectController extends Controller
     public function create()
     {
         $types = Type::all();
-        return view('admin.projects.create', compact('types'));
+        $technologies = Technology::all();
+        return view('admin.projects.create', compact('types', 'technologies'));
     }
 
     /**
@@ -47,7 +49,11 @@ class ProjectController extends Controller
             $validated['image'] = $image_path;
         }
 
-        Project::create($validated);
+        $project = Project::create($validated);
+
+        if ($request->has('technologies')) {
+            $project->technologies()->attach($validated['technologies']);
+        }
 
         return to_route('admin.projects.index')->with('message', "Project $request->title created successfully");
     }

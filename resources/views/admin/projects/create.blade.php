@@ -43,11 +43,30 @@
                 </select>
             </div>
 
+            <div class="mb-3">
+                <label for="technologies" class="form-label">Technologies</label>
+                <select multiple class="form-select form-select" name="technologies[]" id="technologies">
+                    <option selected disabled>Select a technology</option>
+                    @foreach ($technologies as $technology)
+                        <option value="{{ $technology->id }}">
+                            {{ in_array($technology->id, old('technologies', [])) ? 'selected' : '' }}{{ $technology->name }}
+                        </option>
+                    @endforeach
+
+                </select>
+                @error('technologies')
+                    <div class="text-danger">
+                        {{ $message }}
+                    </div>
+                @enderror
+            </div>
+
 
             <div class="mb-3">
                 <label for="url_repo" class="form-label">Repository URL</label>
                 <input type="text" class="form-control @error('url_repo') is-invalid @enderror" name="url_repo"
-                    id="url_repo" aria-describedby="url_repoHelper" placeholder="https://" value="{{ old('url_repo') }}" />
+                    id="url_repo" aria-describedby="url_repoHelper" placeholder="https://"
+                    value="{{ old('url_repo') }}" />
                 <small id="url_repoHelper" class="form-text text-muted">Type the repository URL</small>
                 @error('url_repo')
                     <div class="text-danger">
