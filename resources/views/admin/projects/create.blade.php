@@ -41,26 +41,29 @@
                             {{ $type->name }}</option>
                     @endforeach
                 </select>
-            </div>
-
-            <div class="mb-3">
-                <label for="technologies" class="form-label">Technologies</label>
-                <select multiple class="form-select form-select" name="technologies[]" id="technologies">
-                    <option selected disabled>Select a technology</option>
-                    @foreach ($technologies as $technology)
-                        <option value="{{ $technology->id }}">
-                            {{ in_array($technology->id, old('technologies', [])) ? 'selected' : '' }}{{ $technology->name }}
-                        </option>
-                    @endforeach
-
-                </select>
-                @error('technologies')
+                @error('type')
                     <div class="text-danger">
                         {{ $message }}
                     </div>
                 @enderror
             </div>
 
+            <div class="mb-3 d-flex flex-wrap gap-3">
+                @foreach ($technologies as $technology)
+                    <div class="form-check">
+                        <input class="form-check-input @error('tecnologies') is-inavlid @enderror" type="checkbox"
+                            value="{{ $technology->id }}" id="technology-{{ $technology->id }}" name="technologies[]"
+                            {{ in_array($technology->id, old('technologies', [])) ? 'checked' : '' }} />
+                        <label class="form-check-label" for="technology-{{ $technology->id }}"> {{ $technology->name }}
+                        </label>
+                    </div>
+                @endforeach
+                @error('technologies')
+                    <div class="text-danger">
+                        {{ $message }}
+                    </div>
+                @enderror
+            </div>
 
             <div class="mb-3">
                 <label for="url_repo" class="form-label">Repository URL</label>
