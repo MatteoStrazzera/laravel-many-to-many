@@ -51,6 +51,36 @@
                     @endforeach
                 </select>
             </div>
+
+            <div class="mb-3 d-flex flex-wrap gap-3">
+                @foreach ($technologies as $technology)
+                    @if ($errors->any())
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="{{ $technology->id }}"
+                                id="technology-{{ $technology->id }}" name="technologies[]"
+                                {{ in_array($technology->id, old('technologies', [])) ? 'checked' : '' }} />
+                            <label class="form-check-label" for="technology-{{ $technology->id }}">
+                                {{ $technology->name }}
+                            </label>
+                        </div>
+                    @else
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="{{ $technology->id }}"
+                                id="technology-{{ $technology->id }}" name="technologies[]"
+                                {{ $project->technologies->contains($technology) ? 'checked' : '' }} />
+                            <label class="form-check-label" for="technology-{{ $technology->id }}">
+                                {{ $technology->name }}
+                            </label>
+                        </div>
+                    @endif
+                @endforeach
+                @error('technologies')
+                    <div class="text-danger">
+                        {{ $message }}
+                    </div>
+                @enderror
+            </div>
+
             <div class="mb-3">
                 <label for="url_repo" class="form-label">Repository URL</label>
                 <input type="text" class="form-control @error('url_repo') is-invalid @enderror" name="url_repo"
