@@ -23,6 +23,11 @@
                             <div class="metadata">
                                 <strong>Type:</strong> {{ $project->type ? $project->type->name : 'No type assigned' }}
                             </div>
+                            <br>
+                            <strong>Technologies:</strong>
+                            @foreach ($project->technologies as $technology)
+                                <span class="badge bg-dark">{{ $technology->name }}</span>
+                            @endforeach
                         </li>
                         <hr>
                         <li>
